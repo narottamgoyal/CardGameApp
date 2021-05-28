@@ -1,4 +1,5 @@
-﻿using CardGameApp.Exceptions;
+﻿using CardGameApp.CustomConsole;
+using CardGameApp.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,14 +27,16 @@ namespace CardGameApp
         /// Clubs, Spades, Hearts, Diamonds
         /// </summary>
         private const int CardTypeCount = 4;
+        private readonly IConsole _console;
 
         /// <summary>
         /// Deck size should be in between 40 to 52, default is 40
         /// Default player count is 2
         /// </summary>
         /// <param name="deckSize"></param>
-        public CardGame(int deckSize = 40, int noOfPlayer = 2)
+        public CardGame(IConsole console, int deckSize = 40, int noOfPlayer = 2)
         {
+            _console = console;
             DefaultSetting(deckSize, noOfPlayer);
             LoadGame();
         }
@@ -80,8 +83,8 @@ namespace CardGameApp
         /// <param name="noOfPlayer"></param>
         private void DefaultSetting(int deckSize, int noOfPlayer)
         {
-            if (noOfPlayer < 2) throw new Exception(ErrorMessages.InvalidPlayerSize);
-            if (deckSize > 52 || deckSize < 40) throw new Exception(ErrorMessages.DeckSizeNotInRange);
+            if (noOfPlayer < 2) throw new Exception(CustomeMessages.InvalidPlayerSize);
+            if (deckSize > 52 || deckSize < 40) throw new Exception(CustomeMessages.DeckSizeNotInRange);
             NoOfPlayer = noOfPlayer;
             NoOfCardPerPlayer = deckSize / NoOfPlayer;
             var extraTempcardIfAny = CardTypeCount - ((NoOfCardPerPlayer * noOfPlayer) % CardTypeCount);
@@ -103,12 +106,12 @@ namespace CardGameApp
                 {
                     var card = p.DrawCard();
                     playerDict.Add(p.PlayerNumber, card);
-                    Console.WriteLine($"Player {p.PlayerNumber} ({p.DrawPileCount} cards): {card.Number}");
-                    //Console.WriteLine($"{p}: {card.Number}");
+                    _console.WriteLine(string.Format(CustomeMessages.PlayerStatus, p.PlayerNumber, p.DrawPileCount, card.Number), ConsoleColor.White);
+                    //_console.WriteLine(string.Format(CustomeMessages.PlayerDetailedStatus, p, card.Number), ConsoleColor.White);
                 }
 
                 CheckRoundResult(playerDict);
-                Console.WriteLine();
+                _console.WriteLine(string.Empty, ConsoleColor.White);
             }
             catch (EmptyDrawPileException ex)
             {
@@ -128,8 +131,9 @@ namespace CardGameApp
             if (activePlayerCount < 2)
             {
                 var winner = Players.OrderByDescending(x => x.Score).First();
-                throw new GameOverException($"\nPlayer {winner.PlayerNumber} wins the game!");
+                throw new GameOverException(string.Format(CustomeMessages.PlayerWonTheGame, winner.PlayerNumber));
             }
+            _console.WriteLine(string.Format(CustomeMessages.PlayerIsDead, deadPlayer.PlayerNumber), ConsoleColor.DarkMagenta);
         }
 
         /// <summary>
@@ -146,9 +150,9 @@ namespace CardGameApp
                 Players[dict.First().Key - 1].Score++;
                 Players[dict.First().Key - 1].AddToDiscardPile(PlayedCard);
                 PlayedCard = new List<Card>();
-                Console.WriteLine($"Player {dict.First().Key} wins this round");
+                _console.WriteLine(string.Format(CustomeMessages.PlayerWinInRound, dict.First().Key), ConsoleColor.DarkYellow);
             }
-            else { Console.WriteLine("No winner in this round"); }
+            else { _console.WriteLine(CustomeMessages.NoWinner, ConsoleColor.DarkMagenta); }
         }
     }
 }

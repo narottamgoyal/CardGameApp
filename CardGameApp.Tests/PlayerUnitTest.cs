@@ -89,7 +89,7 @@ namespace CardGameApp.Tests
 
             // Assert
             var caughtException = Assert.Throws<Exception>(action);
-            Assert.Contains(ErrorMessages.PlayerWithNoCard, caughtException.Message);
+            Assert.Contains(CustomeMessages.PlayerWithNoCard, caughtException.Message);
         }
 
         [Fact]
@@ -103,7 +103,7 @@ namespace CardGameApp.Tests
 
             // Assert
             var caughtException = Assert.Throws<Exception>(action);
-            Assert.Contains(ErrorMessages.PlayerWithNoCard, caughtException.Message);
+            Assert.Contains(CustomeMessages.PlayerWithNoCard, caughtException.Message);
         }
     }
 }

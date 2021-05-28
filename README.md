@@ -1,6 +1,9 @@
 # CardGameApp
 
+CardGame is developed in **net5.0**
+
+
 
 #### Unit Test Coverage
 
-![image](https://user-images.githubusercontent.com/2716202/119888014-7ec51200-bf52-11eb-8b5d-388a05394831.png)
+![image](https://user-images.githubusercontent.com/2716202/120026790-39ffb080-c010-11eb-903d-4bef1250a22b.png)

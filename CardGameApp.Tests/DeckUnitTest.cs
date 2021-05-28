@@ -34,7 +34,7 @@ namespace CardGameApp.Tests
 
             // Assert
             var caughtException = Assert.Throws<Exception>(action);
-            Assert.Contains(ErrorMessages.DeckWithNoCardError, caughtException.Message);
+            Assert.Contains(CustomeMessages.DeckWithNoCardError, caughtException.Message);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace CardGameApp.Tests
 
             // Assert
             var caughtException = Assert.Throws<Exception>(action);
-            Assert.Contains(ErrorMessages.DeckWithNoCardError, caughtException.Message);
+            Assert.Contains(CustomeMessages.DeckWithNoCardError, caughtException.Message);
         }
 
 

@@ -19,7 +19,7 @@ namespace CardGameApp
         public Player(int playerNumber, List<Card> cards)
         {
             PlayerNumber = playerNumber;
-            DrawPile = (cards != null && cards.Any()) ? new Stack<Card>(cards) : throw new Exception(ErrorMessages.PlayerWithNoCard);
+            DrawPile = (cards != null && cards.Any()) ? new Stack<Card>(cards) : throw new Exception(CustomeMessages.PlayerWithNoCard);
         }
 
         /// <summary>

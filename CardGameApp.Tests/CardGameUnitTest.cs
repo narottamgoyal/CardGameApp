@@ -1,4 +1,6 @@
-﻿using CardGameApp.Exceptions;
+﻿using CardGameApp.CustomConsole;
+using CardGameApp.Exceptions;
+using Moq;
 using System;
 using Xunit;
 
@@ -6,6 +8,8 @@ namespace CardGameApp.Tests
 {
     public class CardGameUnitTest
     {
+        private readonly Mock<IConsole> _cmdConsole = new Mock<IConsole>();
+
         [Fact]
         public void PlayCardGame_GivenWrongPlayerCount_ShouldThrowException()
         {
@@ -13,11 +17,11 @@ namespace CardGameApp.Tests
             int noOfPlayer = 1;
 
             // Act
-            void action() => new CardGame(noOfPlayer: noOfPlayer);
+            void action() => new CardGame(console: _cmdConsole.Object, noOfPlayer: noOfPlayer);
 
             // Assert
             var caughtException = Assert.Throws<Exception>(action);
-            Assert.Contains(ErrorMessages.InvalidPlayerSize, caughtException.Message);
+            Assert.Contains(CustomeMessages.InvalidPlayerSize, caughtException.Message);
         }
 
         [Fact]
@@ -27,18 +31,18 @@ namespace CardGameApp.Tests
             int deckSize = 100;
 
             // Act
-            void action() => new CardGame(deckSize: deckSize);
+            void action() => new CardGame(console: _cmdConsole.Object, deckSize: deckSize);
 
             // Assert
             var caughtException = Assert.Throws<Exception>(action);
-            Assert.Contains(ErrorMessages.DeckSizeNotInRange, caughtException.Message);
+            Assert.Contains(CustomeMessages.DeckSizeNotInRange, caughtException.Message);
         }
 
         [Fact]
         public void PlayCardGame_GivenDefaultDeckSizeAndPlayerCount_ShouldPlayRound1()
         {
             // Arrange
-            var cardGame = new CardGame();
+            var cardGame = new CardGame(console: _cmdConsole.Object);
 
             // Act
             var exception = Record.Exception(() => cardGame.Play());
@@ -51,7 +55,7 @@ namespace CardGameApp.Tests
         public void PlayCardGame_Given3PlayerCount_ShouldPlayGame()
         {
             // Arrange
-            var cardGame = new CardGame(noOfPlayer: 3);
+            var cardGame = new CardGame(console: _cmdConsole.Object, noOfPlayer: 3);
 
             // Act
             Action action = () =>

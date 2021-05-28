@@ -15,7 +15,7 @@ namespace CardGameApp
         private readonly List<Card> Cards = new List<Card>();
         public Deck(List<Card> cards)
         {
-            if (cards == null || !cards.Any()) throw new Exception(ErrorMessages.DeckWithNoCardError);
+            if (cards == null || !cards.Any()) throw new Exception(CustomeMessages.DeckWithNoCardError);
             Cards.AddRange(cards);
         }
 
